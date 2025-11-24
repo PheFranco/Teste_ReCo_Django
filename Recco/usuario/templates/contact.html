@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Contato — ReCo</title>
+  <link rel="stylesheet" href="style/styles.css">
+  <link rel="stylesheet" href="style/global.css">
+</head>
+<body>
+  <header>
+    <nav>
+      <p><a href="index.html">ReCo + Tr3vos</a> <img src="logo.png" alt="Logo"></p>
+      <ul>
+        <li><a href="about.html">Sobre</a></li>
+        <li><a href="services.html">Serviços</a></li>
+        <li><a href="contact.html">Contato</a></li>
+      </ul>
+      <li class="dropdown">
+        <a class="menu" href="#">Acesso</a>
+        <div class="dropdown-menu">
+          <a href="marketplace.html">Marketplace</a>
+          <a href="login.html">Login</a>
+          <a href="register.html">Registrar</a>
+        </div>
+      </li>
+    </nav>
+  </header>
+{% extends 'base.html' %}
+
+{% block title %}Contato — ReCo{% endblock %}
+
+{% block header %}Contato{% endblock %}
+
+{% block content %}
+  <h1>Contato</h1>
+  <p>Se você tiver alguma dúvida, sugestão ou quiser saber mais sobre o ReCo, entre em contato conosco!</p>
+  <ul>
+    <li>Email: contato@reco.com</li>
+    <li>Telefone: +55 61 1234-5678</li>
+    <li>Instagram</li>
+    <li>Endereço: Rua Exemplo, 123, Brasília - DF</li>
+  </ul>
+{% endblock %}

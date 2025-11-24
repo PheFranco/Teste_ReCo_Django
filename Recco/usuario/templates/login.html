@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block title %}Login — ReCo{% endblock %}
+
+{% block header %}Login{% endblock %}
+
+{% block content %}
+<form id="loginForm" action="" method="post">
+  {% csrf_token %}
+  <label for="email">Email</label>
+  <input id="email" name="email" type="email" required>
+  <label for="password">Senha</label>
+  <input id="password" name="password" type="password" required>
+  <button type="submit">Entrar</button>
+  <p class="small-note">(Login demo — será redirecionado ao perfil)</p>
+</form>
+<p>Não tem conta? <a href="{% url 'usuario:index' %}">Registre-se</a></p>
+{% endblock %}

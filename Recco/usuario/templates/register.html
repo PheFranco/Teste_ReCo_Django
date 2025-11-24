@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block title %}Registrar — ReCo{% endblock %}
+
+{% block header %}Registrar{% endblock %}
+
+{% block content %}
+<form id="registerForm" action="" method="post">
+  {% csrf_token %}
+  <label for="name">Nome</label>
+  <input id="name" name="name" type="text" required>
+  <label for="email">Email</label>
+  <input id="email" name="email" type="email" required>
+  <label for="password">Senha</label>
+  <input id="password" name="password" type="password" required>
+
+  <label for="accountType">Tipo de conta</label>
+  <select id="accountType" name="accountType">
+    <option value="pessoa">Pessoa Física</option>
+    <option value="empresa">Empresa</option>
+    <option value="ong">ONG</option>
+  </select>
+
+  <div id="field-cpf" class="conditional-field" style="display:none; margin-top:8px;">
+    <label for="cpf">CPF</label>
+    <input id="cpf" name="cpf" type="text" maxlength="14" placeholder="123.456.789-00">
+  </div>
+
+  <div id="field-razao" class="conditional-field" style="display:none; margin-top:8px;">
+    <label for="razao">Razão Social</label>
+    <input id="razao" name="razao" type="text">
+  </div>
+
+  <div id="field-cnpj" class="conditional-field" style="display:none; margin-top:8px;">
+    <label for="cnpj">CNPJ</label>
+    <input id="cnpj" name="cnpj" type="text" maxlength="18" placeholder="12.345.678/0001-90">
+  </div>
+
+  <button type="submit">Criar conta</button>
+</form>
+{% endblock %}
