@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Meu Perfil — ReCo{% endblock %}
+
+{% block content %}
+<section class="profile">
+  <h1>Meu Perfil</h1>
+
+  <dl>
+    <dt>Usuário</dt>
+    <dd>{{ user.username }}</dd>
+
+    <dt>Email</dt>
+    <dd>{{ user.email }}</dd>
+
+    <dt>Telefone</dt>
+    <dd>{{ profile.phone|default:"—" }}</dd>
+
+    <dt>Cidade</dt>
+    <dd>{% if profile.city %}{{ profile.get_city_display }}{% else %}—{% endif %}</dd>
+
+    {# Se for Pessoa Física -> mostrar nome, CPF e data #}
+    {% if profile.user_type == 'pf' %}
+      <dt>Nome</dt>
+      <dd>{{ user.first_name|default:"—" }}</dd>
+
+      <dt>CPF</dt>
+      <dd>{{ profile.cpf_cnpj|default:"—" }}</dd>
+
+      <dt>Data de nascimento</dt>
+      <dd>{% if profile.birth_date %}{{ profile.birth_date|date:"d/m/Y" }}{% else %}—{% endif %}</dd>
+
+    {# Se for Pessoa Jurídica -> mostrar razão social e CNPJ #}
+    {% elif profile.user_type == 'pj' %}
+      <dt>Razão social</dt>
+      <dd>{{ profile.razao_social|default:"—" }}</dd>
+
+      <dt>CNPJ</dt>
+      <dd>{{ profile.cpf_cnpj|default:"—" }}</dd>
+    {% else %}
+      <dt>Tipo de usuário</dt>
+      <dd>{% if profile.user_type %}{{ profile.get_user_type_display }}{% else %}—{% endif %}</dd>
+    {% endif %}
+
+  </dl>
+
+  <p>
+    <a href="{% url 'home' %}">Voltar</a>
+    {% if user.is_authenticated %}
+      | <a href="{% url 'perfil:index' %}">Atualizar perfil</a>
+    {% endif %}
+  </p>
+</section>
+{% endblock %}

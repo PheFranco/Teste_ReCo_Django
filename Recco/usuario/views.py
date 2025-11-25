@@ -1,7 +1,9 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
-from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.forms import AuthenticationForm
+from .forms import RegisterForm
+from usuario.models import Profile
 
 def index(request):
     return render(request, 'usuario/home.html', {'title': 'Usuário'})
@@ -11,15 +13,13 @@ def login_view(request):
         form = AuthenticationForm(request, data=request.POST)
         if form.is_valid():
             user = form.get_user()
+            # Garantir que exista um Profile para este user
+            Profile.objects.get_or_create(user=user)
             login(request, user)
-            messages.success(request, 'Login realizado com sucesso.')
-            # priorizar next se fornecido
-            next_url = request.POST.get('next') or request.GET.get('next') or 'usuario:index'
-            return redirect(next_url)
-        else:
-            messages.error(request, 'Usuário ou senha inválidos.')
+            messages.success(request, "Login realizado com sucesso.")
+            return redirect('home')
     else:
-        form = AuthenticationForm()
+        form = AuthenticationForm(request)
     return render(request, 'usuario/login.html', {'form': form})
 
 def logout_view(request):
@@ -29,13 +29,11 @@ def logout_view(request):
 
 def register_view(request):
     if request.method == 'POST':
-        form = UserCreationForm(request.POST)
+        form = RegisterForm(request.POST)
         if form.is_valid():
             form.save()
-            messages.success(request, 'Conta criada com sucesso. Faça login.')
+            messages.success(request, "Conta criada com sucesso. Faça login.")
             return redirect('usuario:login')
-        else:
-            messages.error(request, 'Corrija os erros no formulário.')
     else:
-        form = UserCreationForm()
+        form = RegisterForm()
     return render(request, 'usuario/register.html', {'form': form})

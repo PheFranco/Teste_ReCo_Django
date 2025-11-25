@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Home - ReCo{% endblock %}
+
+{% block content %}
+<main class="container">
+  <section class="hero">
+    <h1>Bem-vindo ao ReCo</h1>
+    <p>Use a navegação para acessar Marketplace, Usuário e Perfil.</p>
+    <nav>
+      <a href="{% url 'marketplace:index' %}">Marketplace</a> |
+      <a href="{% url 'usuario:index' %}">Usuário</a> |
+      <a href="{% url 'perfil:index' %}">Perfil</a>
+    </nav>
+  </section>
+</main>
+{% endblock %}

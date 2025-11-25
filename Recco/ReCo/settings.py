@@ -26,7 +26,16 @@ SECRET_KEY = 'django-insecure-7&f2v&)o0c8v7tyd)o83)0zq$0p6(vnse9@df46x0nd9b&t1(t
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+# Desenvolvimento: liberar hosts/origens usadas pelo browser/preview
+ALLOWED_HOSTS = ["127.0.0.1", "localhost", "*"]  # remover "*" em produção
+
+# Se você acessar via forwarded URL (ex.: https://123-45-67-89.preview.app)
+# adicione a origem completa com esquema:
+CSRF_TRUSTED_ORIGINS = [
+    "http://127.0.0.1:8000",
+    "http://localhost:8000",
+    # "https://<SEU_PREVIEW_HOST>",  # exemplo: "https://123-45-67-89.preview.app"
+]
 
 
 # Application definition
@@ -118,13 +127,16 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
 STATIC_URL = 'static/'
-# Diretório para arquivos estáticos em desenvolvimento
-STATICFILES_DIRS = [BASE_DIR / 'static',]
+STATICFILES_DIRS = [
+    BASE_DIR / 'static',  # garante que Recco/static/ seja procurado em dev
+]
 
-# Em produção, defina STATIC_ROOT e rode `collectstatic` antes de servir arquivos estáticos
+# Em produção use:
 # STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
