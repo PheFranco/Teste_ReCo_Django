@@ -1,0 +1,160 @@
+{% extends 'base.html' %}
+
+{% block title %}Registrar — ReCo{% endblock %}
+{% load static %}
+
+{% block content %}
+  <h1>Registrar</h1>
+
+  {% if messages %}
+    <ul class="messages">
+      {% for message in messages %}
+        <li class="{{ message.tags }}">{{ message }}</li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+
+  <form method="post" action="{% url 'usuario:register' %}">
+    {% csrf_token %}
+    {{ form.non_field_errors }}
+
+    <div>
+      <label>Usuário</label>
+      {{ form.username }}
+      {{ form.username.errors }}
+    </div>
+
+    <div>
+      <label>Email</label>
+      {{ form.email }}
+      {{ form.email.errors }}
+    </div>
+
+    <div>
+      <label>Nome completo</label>
+      {{ form.first_name }}
+      {{ form.first_name.errors }}
+    </div>
+
+    <div>
+      <label>Telefone</label>
+      {{ form.phone }}
+      {{ form.phone.errors }}
+    </div>
+
+    <div>
+      <label>Cidade</label>
+      {{ form.city }}
+      {{ form.city.errors }}
+    </div>
+
+    <div>
+      <label>Tipo de usuário</label>
+      {{ form.user_type }}
+      {{ form.user_type.errors }}
+    </div>
+
+    <div>
+      <label>CPF/CNPJ</label>
+      {{ form.cpf_cnpj }}
+      {{ form.cpf_cnpj.errors }}
+    </div>
+
+    <div id="razao-wrap" style="display: none;">
+      <label>Razão social</label>
+      {{ form.razao_social }}
+      {{ form.razao_social.errors }}
+    </div>
+
+    <div>
+      <label>Data de nascimento</label>
+      {{ form.birth_date }}
+      {{ form.birth_date.errors }}
+    </div>
+
+    <div>
+      <label>Senha</label>
+      {{ form.password1 }}
+      {{ form.password1.errors }}
+    </div>
+
+    <div>
+      <label>Confirmar senha</label>
+      {{ form.password2 }}
+      {{ form.password2.errors }}
+    </div>
+
+    <button type="submit">Criar conta</button>
+  </form>
+
+  <p>Já tem conta? <a href="{% url 'usuario:login' %}">Entrar</a></p>
+
+  <script>
+    // Mostrar/ocultar razão social conforme tipo de usuário e aplicar máscaras
+    (function(){
+      var userTypeEl = document.querySelector('select[name="user_type"]');
+      var razaoWrap = document.getElementById('razao-wrap');
+      var cpfEl = document.querySelector('input[name="cpf_cnpj"]');
+      var dateEl = document.querySelector('input[name="birth_date"]');
+
+      function toggleRazao() {
+        if (!userTypeEl) return;
+        var val = userTypeEl.value;
+        razaoWrap.style.display = (val === 'pj') ? 'block' : 'none';
+        // adjust placeholder/maxlength if needed
+      }
+
+      function maskCpfCnpj(v){
+        var digits = v.replace(/\D/g,'');
+        if (digits.length <= 11) {
+          // CPF mask 000.000.000-00
+          digits = digits.slice(0,11);
+          digits = digits.replace(/(\d{3})(\d)/,'$1.$2');
+          digits = digits.replace(/(\d{3})(\d)/,'$1.$2');
+          digits = digits.replace(/(\d{3})(\d{1,2})$/,'$1-$2');
+          return digits;
+        } else {
+          // CNPJ mask 00.000.000/0000-00
+          digits = digits.slice(0,14);
+          digits = digits.replace(/(\d{2})(\d)/,'$1.$2');
+          digits = digits.replace(/(\d{3})(\d)/,'$1.$2');
+          digits = digits.replace(/(\d{3})(\d)/,'$1/$2');
+          digits = digits.replace(/(\d{4})(\d{1,2})$/,'$1-$2');
+          return digits;
+        }
+      }
+
+      function maskDate(v){
+        var d = v.replace(/\D/g,'').slice(0,8);
+        if (d.length >= 5) {
+          d = d.replace(/(\d{2})(\d{2})(\d{1,4})/,'$1/$2/$3');
+        } else if (d.length >= 3) {
+          d = d.replace(/(\d{2})(\d{1,2})/,'$1/$2');
+        }
+        return d;
+      }
+
+      if (cpfEl) {
+        cpfEl.addEventListener('input', function(e){
+          var pos = this.selectionStart;
+          var before = this.value;
+          this.value = maskCpfCnpj(this.value);
+          // try keep cursor near end (best-effort)
+          if (this.selectionStart < pos) this.selectionStart = this.selectionEnd = this.value.length;
+        });
+      }
+
+      if (dateEl) {
+        dateEl.addEventListener('input', function(){
+          this.value = maskDate(this.value);
+        });
+      }
+
+      if (userTypeEl) {
+        userTypeEl.addEventListener('change', toggleRazao);
+        document.addEventListener('DOMContentLoaded', toggleRazao);
+        toggleRazao();
+      }
+    })();
+  </script>
+{% endblock %}
