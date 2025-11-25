@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block title %}Registrar — ReCo{% endblock %}
+
+{% block content %}
+  <h1>Registrar</h1>
+
+  {% if messages %}
+    <ul class="messages">
+      {% for message in messages %}
+        <li class="{{ message.tags }}">{{ message }}</li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+
+  <form method="post" action="{% url 'usuario:register' %}">
+    {% csrf_token %}
+    {{ form.non_field_errors }}
+    <div>
+      <label>Usuário</label>
+      {{ form.username }}
+      {{ form.username.errors }}
+    </div>
+    <div>
+      <label>Senha</label>
+      {{ form.password1 }}
+      {{ form.password1.errors }}
+    </div>
+    <div>
+      <label>Confirmar senha</label>
+      {{ form.password2 }}
+      {{ form.password2.errors }}
+    </div>
+    <button type="submit">Criar conta</button>
+  </form>
+
+  <p>Já tem conta? <a href="{% url 'usuario:login' %}">Entrar</a></p>
+{% endblock %}
