@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'usuario',  # <-- manter/adicionar
+    'marketplace',  # app do marketplace
 ]
             
 
