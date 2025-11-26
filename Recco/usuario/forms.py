@@ -13,6 +13,7 @@ class RegisterForm(UserCreationForm):
     first_name = forms.CharField(label='Nome completo', required=True)
     phone = forms.CharField(label='Telefone', required=True)
     city = forms.ChoiceField(label='Cidade', choices=Profile.CITY_CHOICES)
+<<<<<<< HEAD
     user_type = forms.ChoiceField(label='Tipo de usuário', choices=Profile.USER_TYPE_CHOICES)
     cpf_cnpj = forms.CharField(label='CPF / CNPJ', required=False)
     razao_social = forms.CharField(label='Razão social', required=False)
@@ -30,6 +31,12 @@ class RegisterForm(UserCreationForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         # adiciona classes bootstrap aos widgets
+=======
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # aplicar classes bootstrap/form-control automaticamente
+>>>>>>> 788b47c (25/11)
         for name, field in self.fields.items():
             widget = field.widget
             existing = widget.attrs.get('class', '')
@@ -38,6 +45,7 @@ class RegisterForm(UserCreationForm):
             else:
                 widget.attrs['class'] = (existing + ' form-control').strip()
 
+<<<<<<< HEAD
     def clean_birth_date(self):
         val = self.cleaned_data.get('birth_date')
         if not val:
@@ -127,3 +135,11 @@ class ProfileForm(forms.ModelForm):
             if len(val_digits) != 14:
                 raise ValidationError("CNPJ deve ter 14 dígitos.")
         return val_digits
+=======
+# Comandos para rodar o servidor
+# cd Recco
+# source .venv/bin/activate
+# python manage.py runserver 0.0.0.0:8000
+# pip install django-widget-tweaks
+# reinicie o runserver
+>>>>>>> 788b47c (25/11)
