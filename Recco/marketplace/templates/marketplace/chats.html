@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block title %}Chats — ReCo{% endblock %}
+
+{% block content %}
+<div class="container my-4">
+  <h1>Chats</h1>
+  {% if conversations %}
+    <div class="list-group">
+      {% for c in conversations %}
+        <a class="list-group-item list-group-item-action" href="{% url 'marketplace:chat' c.donation.pk %}">
+          <div class="d-flex w-100 justify-content-between">
+            <h5 class="mb-1">{{ c.donation.title }}</h5>
+            <small class="text-muted">{{ c.last_message.created_at|date:"d/m/Y H:i" }}</small>
+          </div>
+          <p class="mb-1 text-truncate"><strong>{{ c.other.username }}:</strong> {{ c.last_message.text }}</p>
+          <small class="text-muted">Anúncio por {{ c.donation.donor.username }}</small>
+        </a>
+      {% endfor %}
+    </div>
+  {% else %}
+    <p>Nenhuma conversa encontrada.</p>
+  {% endif %}
+</div>
+{% endblock %}

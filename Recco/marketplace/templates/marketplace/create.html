@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block title %}Novo anúncio — Doações{% endblock %}
+
+{% block content %}
+<div class="container my-4">
+  <h1>Novo anúncio de doação</h1>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.non_field_errors }}
+    {% for field in form %}
+      <div class="mb-3">
+        <label class="form-label">{{ field.label }}</label>
+        {{ field }}
+        {% if field.help_text %}<div class="form-text">{{ field.help_text }}</div>{% endif %}
+        {{ field.errors }}
+      </div>
+    {% endfor %}
+    <button class="btn btn-primary" type="submit">Publicar</button>
+    <a class="btn btn-link" href="{% url 'marketplace:index' %}">Cancelar</a>
+  </form>
+</div>
+{% endblock %}

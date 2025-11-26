@@ -1,14 +1,36 @@
 {% extends 'base.html' %}
 {% load static %}
-
-{% block title %}Marketplace{% endblock %}
+{% block title %}Doações — ReCo{% endblock %}
 
 {% block content %}
-<section class="container">
-  <h1>Marketplace</h1>
-  <p>Bem-vindo ao marketplace — página criada automaticamente.</p>
-  <p><a href="{% url 'home' %}">Voltar para a home</a></p>
-</section>
-{% endblock %}
+<div class="container my-4">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h1>Doações</h1>
+    {% if user.is_authenticated %}
+      <a class="btn btn-primary" href="{% url 'marketplace:create' %}">Anunciar doação</a>
+    {% endif %}
+  </div>
 
-<a href="aa"></a>
+  {% if donations %}
+    <div class="row g-3">
+      {% for d in donations %}
+        <div class="col-md-6">
+          <div class="card h-100">
+            <div class="card-body">
+              <h5 class="card-title">{{ d.title }}</h5>
+              <p class="card-text text-muted small">{{ d.condition }} • {{ d.city }}</p>
+              <p class="card-text">{{ d.description|truncatechars:140 }}</p>
+              <a href="{% url 'marketplace:detail' d.pk %}" class="stretched-link">Ver detalhes</a>
+            </div>
+            <div class="card-footer text-muted small">
+              Anunciado por {{ d.donor.username }} — {{ d.created_at|date:"d/m/Y H:i" }}
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <p>Nenhum item disponível no momento.</p>
+  {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+{% block title %}Chat — {{ donation.title }}{% endblock %}
+{% block content %}
+<div class="container my-4">
+  <h3>Chat sobre: {{ donation.title }}</h3>
+  <div id="chat-box" class="border rounded p-3 mb-3" style="height:320px; overflow:auto; background:#fff;">
+    <!-- mensagens serão carregadas via JS -->
+  </div>
+
+  <form id="msg-form" class="mb-3">
+    {% csrf_token %}   {# precisa existir #}
+    {{ form.text }}
+    <button id="send-btn" class="btn btn-primary mt-2">Enviar</button>
+  </form>
+</div>
+
+<script>
+(function(){
+  const pk = {{ donation.pk }};
+  const listUrl = "{% url 'marketplace:messages_json' donation.pk %}";
+  const postUrl = "{% url 'marketplace:post_message' donation.pk %}";
+  const chatBox = document.getElementById('chat-box');
+  const form = document.getElementById('msg-form');
+
+  function escapeHtml(s){ return s.replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;'); }
+
+  async function load(){
+    try {
+      const res = await fetch(listUrl);
+      const data = await res.json();
+      chatBox.innerHTML = '';
+      (data.messages || []).forEach(m=>{
+        const div = document.createElement('div');
+        div.className = 'mb-2';
+        div.innerHTML = '<strong>'+escapeHtml(m.sender)+'</strong>: '+escapeHtml(m.text) + '<div class="text-muted small">'+new Date(m.created_at).toLocaleString()+'</div>';
+        chatBox.appendChild(div);
+      });
+      chatBox.scrollTop = chatBox.scrollHeight;
+    } catch(err){ console.error(err); }
+  }
+
+  function getCookie(name) {
+    const v = document.cookie.match('(^|;)\\s*' + name + '\\s*=\\s*([^;]+)');
+    return v ? v.pop() : '';
+  }
+  const csrftoken = getCookie('csrftoken');
+
+  form.addEventListener('submit', async function(e){
+    e.preventDefault();
+    const formData = new FormData(form);
+    // inclui header CSRF e envia cookies (same-origin)
+    const res = await fetch(postUrl, {
+      method: 'POST',
+      body: formData,
+      credentials: 'same-origin',
+      headers: { 'X-CSRFToken': csrftoken }
+    });
+    if (res.ok) {
+      form.querySelector('textarea').value = '';
+      await load();
+    } else {
+      const j = await res.json().catch(()=>({}));
+      alert(j.error || 'Erro ao enviar mensagem');
+    }
+  });
+
+  // poll a cada 3s
+  load();
+  setInterval(load, 3000);
+})();
+</script>
+{% endblock %}

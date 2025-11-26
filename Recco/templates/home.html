@@ -1,18 +1,57 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
 {% load static %}
 
-{% block title %}Home - ReCo{% endblock %}
+{% block title %}Home — ReCo{% endblock %}
 
 {% block content %}
 <main class="container">
   <section class="hero">
     <h1>Bem-vindo ao ReCo</h1>
     <p>Use a navegação para acessar Marketplace, Usuário e Perfil.</p>
-    <nav>
-      <a href="{% url 'marketplace:index' %}">Marketplace</a> |
-      <a href="{% url 'usuario:index' %}">Usuário</a> |
-      <a href="{% url 'perfil:index' %}">Perfil</a>
-    </nav>
+    
+  </section>
+
+  <section id="about">
+    <div class="hero">
+      <div class="hero-media"></div>
+      <h1>Reutiliza & Conecta</h1>
+      <p>Conexão que transforma descarte em oportunidade.</p>
+      <div class="barra"></div>
+    </div>
+  </section>
+
+  <section>
+    <div>
+      <h2>Motivação</h2>
+      <p>Só neste ano cerca de 450 toneladas de lixo eletrônico foram descartadas nos pontos de entrega voluntária; esse número pode ser maior se parte da população não conhecer esses pontos.</p>
+      <h3>Nossa Missão</h3>
+      <p>Conectar quem precisa descartar ou doar aparelhos e peças eletrônicas com quem possa reutilizá-las: ONGs, artistas e pequenos reparadores.</p>
+    </div>
+  </section>
+
+  <section id="services">
+    <div>
+      <h2>Serviços</h2>
+      <p>Plataforma para cadastrar itens para doação/descartes e procurar por itens reutilizáveis.</p>
+    </div>
+    <div>
+      <h2>ReCo em números</h2>
+      <ul>
+        <li>1000+ usuários cadastrados</li>
+        <li>500+ itens doados</li>
+        <li>300+ itens reutilizados</li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="contact">
+    <div class="contact">
+      <h2>Contato</h2>
+      <ul>
+        <li>Email: contato@reco.com</li>
+        <li>Telefone: +55 61 1234-5678</li>
+      </ul>
+    </div>
   </section>
 </main>
 {% endblock %}

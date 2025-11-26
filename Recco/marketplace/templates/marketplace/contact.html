@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Contato — {{ donation.title }}{% endblock %}
+
+{% block content %}
+<div class="container my-4">
+  <h1>Contato sobre: {{ donation.title }}</h1>
+  <p class="text-muted">Anunciado por {{ donation.donor.username }}</p>
+
+  <form method="post" action="">
+    {% csrf_token %}
+    <div class="mb-3">
+      <label class="form-label">Sua mensagem</label>
+      <textarea name="message" class="form-control" rows="6" required>Olá — tenho interesse na doação "{{ donation.title }}".</textarea>
+    </div>
+
+    <div class="d-flex gap-2">
+      <button type="submit" class="btn btn-primary">Enviar mensagem</button>
+      <a class="btn btn-outline-secondary" href="{% url 'marketplace:detail' donation.pk %}">Voltar</a>
+    </div>
+  </form>
+</div>
+{% endblock %}

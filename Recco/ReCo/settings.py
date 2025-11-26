@@ -127,12 +127,10 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
-STATIC_URL = 'static/'
-STATICFILES_DIRS = [
-    BASE_DIR / 'static',  # garante que Recco/static/ seja procurado em dev
-]
+STATIC_URL = '/static/'
+STATICFILES_DIRS = [ BASE_DIR / 'static' ]  # garante que Recco/static/ seja procurado em dev
 
-# Em produção use:
+# Em produção, defina STATIC_ROOT e rode collectstatic
 # STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 # Default primary key field type

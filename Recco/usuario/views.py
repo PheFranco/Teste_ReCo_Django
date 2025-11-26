@@ -17,7 +17,7 @@ def login_view(request):
             Profile.objects.get_or_create(user=user)
             login(request, user)
             messages.success(request, "Login realizado com sucesso.")
-            return redirect('home')
+            return redirect('marketplace:index')
     else:
         form = AuthenticationForm(request)
     return render(request, 'usuario/login.html', {'form': form})
