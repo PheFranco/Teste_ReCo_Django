@@ -47,7 +47,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'usuario',  # <-- manter/adicionar
+    'django.contrib.humanize',
+    'usuario',
+    'perfil',
+    'marketplace',
 ]
             
 

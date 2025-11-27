@@ -1,24 +1,288 @@
-body { font-family: system-ui, Arial; margin:0; color:#222; background:#f7f7f7; }
-header{ background:#fff; padding:12px 20px; border-bottom:1px solid #e5e5e5;}
-.main-nav{list-style:none;display:flex;gap:12px;margin:0;padding:0}
-.hero{padding:40px 20px;background:linear-gradient(90deg,#f0f9ff,#fff)}
-.barra{height:4px;background:#28a745;width:120px;margin-top:12px}
+:root {
+  --bg-page: #f7f7f9;
+  --bg-dark: #201f2b;
+  --bg-darker: #15141d;
+  --text-primary: #1f1f23;
+  --text-muted: #5d5f75;
+  --brand: #5f4dee;
+  --brand-dark: #4b3ad3;
+  --card-shadow: 0 20px 45px rgba(15, 22, 38, 0.08);
+}
+
+* {
+  box-sizing: border-box;
+}
 
 body {
-  font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
   margin: 0;
-  color: #222;
-  background-color: #533838ff ;
+  color: var(--text-primary);
+  background: var(--bg-page);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
-header {
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.site-header {
+  background: var(--bg-dark);
+  color: #fff;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+}
+
+.nav-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.75rem 0;
+}
+
+.brand {
+  display: inline-flex;
+  gap: 0.5rem;
+  align-items: center;
+  font-weight: 600;
+  font-size: 1.2rem;
+  color: #fff;
+}
+
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.nav-actions .welcome {
+  color: #d1d2ff;
+  font-size: 0.9rem;
+}
+
+.nav-dropdown {
+  position: relative;
+}
+
+.nav-dropdown button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.nav-dropdown-menu {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 0.35rem);
   background: #fff;
-  border-bottom: 1px solid #e5e5e5;
-  padding: 12px 20px;
+  border-radius: 0.75rem;
+  box-shadow: 0 16px 40px rgba(10, 10, 25, 0.2);
+  padding: 0.5rem;
+  min-width: 200px;
+  display: none;
+  z-index: 20;
 }
 
-.main-nav { list-style: none; margin: 0; padding: 0; display: flex; gap: 12px; }
-.main-nav a { text-decoration: none; color: #333; }
+.nav-dropdown-menu a {
+  display: block;
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.5rem;
+  color: var(--text-primary);
+  font-weight: 500;
+}
 
-.hero { padding: 40px 20px; background: linear-gradient(90deg,#f0f9ff,#fff); }
-.barra { height: 4px; background: #28a745; width: 120px; margin-top: 12px; }
+.nav-dropdown-menu a:hover,
+.nav-dropdown-menu a:focus-visible {
+  background: rgba(95, 77, 238, 0.08);
+}
+
+.nav-dropdown.open .nav-dropdown-menu {
+  display: block;
+}
+
+.site-main {
+  padding: 2.5rem 0 3.5rem;
+  flex: 1;
+}
+
+.site-footer {
+  background: var(--bg-darker);
+  color: #c5c6f5;
+  padding: 2rem 0;
+  text-align: center;
+}
+
+.message-stack {
+  padding: 1rem 0 0;
+}
+
+.hero-banner {
+  background: linear-gradient(120deg, #5f4dee, #3dd6d0);
+  color: #fff;
+  border-radius: 1.5rem;
+  padding: 3rem;
+  box-shadow: var(--card-shadow);
+}
+
+.hero-banner h1 {
+  font-size: clamp(2.2rem, 4vw, 3.2rem);
+  margin-bottom: 1rem;
+}
+
+.hero-banner p {
+  font-size: 1.1rem;
+  max-width: 640px;
+}
+
+.hero-banner .cta-group {
+  margin-top: 2rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.section-card,
+.form-card,
+.profile-summary {
+  background: #fff;
+  border-radius: 1rem;
+  padding: 1.75rem;
+  box-shadow: var(--card-shadow);
+}
+
+.section-card + .section-card {
+  margin-top: 1.5rem;
+}
+
+.stat-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 1rem;
+}
+
+.stat-card {
+  background: #f3f4ff;
+  border-radius: 0.8rem;
+  padding: 1rem;
+  text-align: center;
+}
+
+.stat-card strong {
+  display: block;
+  font-size: 1.8rem;
+  color: var(--brand);
+}
+
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.5rem;
+}
+
+.donation-card {
+  background: #fff;
+  border-radius: 1rem;
+  padding: 1.5rem;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  border: 1px solid rgba(93, 95, 117, 0.12);
+}
+
+.donation-card h3 {
+  margin: 0;
+}
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.2rem 0.7rem;
+  border-radius: 999px;
+  background: rgba(93, 95, 117, 0.12);
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.filter-bar {
+  background: #fff;
+  border-radius: 1rem;
+  padding: 1rem 1.5rem;
+  box-shadow: var(--card-shadow);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: flex-end;
+  margin-bottom: 1.5rem;
+}
+
+.filter-bar .form-label {
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+.form-card {
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+.profile-summary dl {
+  display: grid;
+  grid-template-columns: minmax(120px, 200px) 1fr;
+  column-gap: 1.25rem;
+  row-gap: 0.6rem;
+  margin: 0;
+}
+
+.profile-summary dt {
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+.profile-summary dd {
+  margin: 0;
+}
+
+.chat-wrapper {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+
+.chat-box {
+  background: #fff;
+  border-radius: 1rem;
+  padding: 1rem;
+  box-shadow: var(--card-shadow);
+  min-height: 320px;
+  max-height: 420px;
+  overflow-y: auto;
+}
+
+.chat-message {
+  margin-bottom: 0.75rem;
+}
+
+.chat-message strong {
+  display: inline-block;
+  margin-bottom: 0.2rem;
+}
+
+.chat-form textarea {
+  resize: none;
+}
+
+@media (max-width: 992px) {
+  .nav-container {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .nav-actions {
+    width: 100%;
+    justify-content: flex-start;
+  }
+}

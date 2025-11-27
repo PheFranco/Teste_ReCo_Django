@@ -1,72 +1,125 @@
 {% extends 'base.html' %}
 {% block title %}Chat — {{ donation.title }}{% endblock %}
+
 {% block content %}
-<div class="container my-4">
-  <h3>Chat sobre: {{ donation.title }}</h3>
-  <div id="chat-box" class="border rounded p-3 mb-3" style="height:320px; overflow:auto; background:#fff;">
-    <!-- mensagens serão carregadas via JS -->
+  <div class="container">
+    <section class="section-card">
+      <div class="d-flex flex-wrap justify-content-between align-items-start gap-3">
+        <div>
+          <p class="text-muted mb-1">{{ donation.city|default:'Cidade não informada' }}</p>
+          <h1 class="h4 mb-1">Conversa sobre {{ donation.title }}</h1>
+          {% if active_participant %}
+            <small class="text-muted">Com {{ active_participant.get_full_name|default:active_participant.username }}</small>
+          {% endif %}
+        </div>
+        <div class="d-flex gap-2">
+          <a class="btn btn-outline-secondary" href="{% url 'marketplace:detail' donation.pk %}">Voltar ao anúncio</a>
+          <a class="btn btn-outline-secondary" href="{% url 'marketplace:chats' %}">Ver todos os chats</a>
+        </div>
+      </div>
+
+      {% if is_owner and participants %}
+        <form method="get" class="row g-2 mt-4">
+          <div class="col-md-6">
+            <label class="form-label">Conversa com</label>
+            <select class="form-select" name="with" onchange="this.form.submit()">
+              {% for person in participants %}
+                <option value="{{ person.pk }}" {% if active_participant and person.pk == active_participant.pk %}selected{% endif %}>
+                  {{ person.get_full_name|default:person.username }}
+                </option>
+              {% endfor %}
+            </select>
+          </div>
+        </form>
+      {% endif %}
+
+      {% if active_participant and messages_url %}
+        <div id="chat-box" class="chat-box mt-4" data-messages-url="{{ messages_url }}" data-empty-text="Nenhuma mensagem ainda. Dê o primeiro oi!"></div>
+
+        <form id="msg-form" class="chat-form mt-3" data-post-url="{{ post_url }}">
+          {% csrf_token %}
+          {{ form.text }}
+          <button id="send-btn" class="btn btn-primary mt-2" type="submit">Enviar</button>
+        </form>
+      {% else %}
+        <p class="text-muted mt-4 mb-0">Selecione um interlocutor ou aguarde alguém iniciar a conversa.</p>
+      {% endif %}
+    </section>
   </div>
 
-  <form id="msg-form" class="mb-3">
-    {% csrf_token %}   {# precisa existir #}
-    {{ form.text }}
-    <button id="send-btn" class="btn btn-primary mt-2">Enviar</button>
-  </form>
-</div>
+  {% if messages_url %}
+    <script>
+      (function(){
+        const chatBox = document.getElementById('chat-box');
+        const form = document.getElementById('msg-form');
+        if (!chatBox || !form) return;
+        const messagesUrl = chatBox.dataset.messagesUrl;
+        const postUrl = form.dataset.postUrl;
+        if (!messagesUrl || !postUrl) return;
 
-<script>
-(function(){
-  const pk = {{ donation.pk }};
-  const listUrl = "{% url 'marketplace:messages_json' donation.pk %}";
-  const postUrl = "{% url 'marketplace:post_message' donation.pk %}";
-  const chatBox = document.getElementById('chat-box');
-  const form = document.getElementById('msg-form');
+        const emptyText = chatBox.dataset.emptyText || '';
+        const textarea = form.querySelector('textarea');
 
-  function escapeHtml(s){ return s.replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;'); }
+        function escapeHtml(text) {
+          return text
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;');
+        }
 
-  async function load(){
-    try {
-      const res = await fetch(listUrl);
-      const data = await res.json();
-      chatBox.innerHTML = '';
-      (data.messages || []).forEach(m=>{
-        const div = document.createElement('div');
-        div.className = 'mb-2';
-        div.innerHTML = '<strong>'+escapeHtml(m.sender)+'</strong>: '+escapeHtml(m.text) + '<div class="text-muted small">'+new Date(m.created_at).toLocaleString()+'</div>';
-        chatBox.appendChild(div);
-      });
-      chatBox.scrollTop = chatBox.scrollHeight;
-    } catch(err){ console.error(err); }
-  }
+        async function loadMessages() {
+          try {
+            const res = await fetch(messagesUrl, { credentials: 'same-origin' });
+            const data = await res.json();
+            const list = data.messages || [];
+            chatBox.innerHTML = '';
+            if (!list.length) {
+              chatBox.innerHTML = `<p class="text-muted">${emptyText}</p>`;
+              return;
+            }
+            list.forEach((msg) => {
+              const wrapper = document.createElement('div');
+              wrapper.className = 'chat-message';
+              const created = new Date(msg.created_at).toLocaleString();
+              wrapper.innerHTML = `<strong>${escapeHtml(msg.sender)}</strong> <span class="text-muted small">${created}</span><div>${escapeHtml(msg.text)}</div>`;
+              chatBox.appendChild(wrapper);
+            });
+            chatBox.scrollTop = chatBox.scrollHeight;
+          } catch (err) {
+            console.error(err);
+          }
+        }
 
-  function getCookie(name) {
-    const v = document.cookie.match('(^|;)\\s*' + name + '\\s*=\\s*([^;]+)');
-    return v ? v.pop() : '';
-  }
-  const csrftoken = getCookie('csrftoken');
+        function getCookie(name) {
+          const value = document.cookie.match('(^|;)\\s*' + name + '\\s*=\\s*([^;]+)');
+          return value ? value.pop() : '';
+        }
 
-  form.addEventListener('submit', async function(e){
-    e.preventDefault();
-    const formData = new FormData(form);
-    // inclui header CSRF e envia cookies (same-origin)
-    const res = await fetch(postUrl, {
-      method: 'POST',
-      body: formData,
-      credentials: 'same-origin',
-      headers: { 'X-CSRFToken': csrftoken }
-    });
-    if (res.ok) {
-      form.querySelector('textarea').value = '';
-      await load();
-    } else {
-      const j = await res.json().catch(()=>({}));
-      alert(j.error || 'Erro ao enviar mensagem');
-    }
-  });
+        form.addEventListener('submit', async function (event) {
+          event.preventDefault();
+          const formData = new FormData(form);
+          try {
+            const res = await fetch(postUrl, {
+              method: 'POST',
+              body: formData,
+              credentials: 'same-origin',
+              headers: { 'X-CSRFToken': getCookie('csrftoken') },
+            });
+            if (!res.ok) {
+              const payload = await res.json().catch(() => ({}));
+              alert(payload.error || 'Erro ao enviar mensagem');
+              return;
+            }
+            if (textarea) textarea.value = '';
+            await loadMessages();
+          } catch (err) {
+            console.error(err);
+          }
+        });
 
-  // poll a cada 3s
-  load();
-  setInterval(load, 3000);
-})();
-</script>
+        loadMessages();
+        setInterval(loadMessages, 3500);
+      })();
+    </script>
+  {% endif %}
 {% endblock %}

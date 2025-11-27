@@ -1,59 +1,39 @@
 {% extends 'base.html' %}
 
-{% block title %}Usuário — ReCo{% endblock %}
-
+{% block title %}Área do Usuário — ReCo{% endblock %}
 
 {% block content %}
-  <h1>{{ title }}</h1>
-  <p>Área do usuário — página mínima.</p>
-  <p><a href="{% url 'usuario:login' %}">Entrar</a> | <a href="{% url 'usuario:register' %}">Registrar</a></p>
+  <div class="container d-flex flex-column gap-4">
+    <section class="section-card">
+      <h1 class="h3 mb-3">Olá{% if request.user.is_authenticated %}, {{ request.user.first_name|default:request.user.username }}{% endif %}!</h1>
+      <p class="text-muted">Aqui você encontra atalhos rápidos para entrar, criar conta, ajustar o perfil e acompanhar os anúncios publicados.</p>
+    </section>
 
+    <section class="card-grid">
+      <article class="section-card">
+        <h3>Entrar</h3>
+        <p class="text-muted">Acesse o painel e continue de onde parou.</p>
+        <a class="btn btn-primary" href="{% url 'usuario:login' %}">Fazer login</a>
+      </article>
+      <article class="section-card">
+        <h3>Criar uma conta</h3>
+        <p class="text-muted">Registre dados básicos, escolha o tipo de usuário e personalize o perfil.</p>
+        <a class="btn btn-outline-primary" href="{% url 'usuario:register' %}">Quero me cadastrar</a>
+      </article>
+      <article class="section-card">
+        <h3>Perfil &amp; Preferências</h3>
+        <p class="text-muted">Atualize telefone, cidade, CPF/CNPJ e descreva a organização.</p>
+        <a class="btn btn-secondary" href="{% url 'perfil:index' %}">Ver perfil</a>
+      </article>
+    </section>
 
- 
-      <p>Bem-vindo ao projeto ReCo. Esta é a página inicial de exemplo.</p>
-      <p>Admin: <a href="/admin/">/admin/</a></p>
-      <section id="about">
-        <div class="hero">
-          <div class="hero-media">
-            
-          </div>
-          <h1>Reutiliza & Conecta</h1>
-          <p>Conexão que transforma descarte em oportunidade.</p>
-          <div class="barra"></div>
-        </div>
-      </section>
-
-      <section style="background-color: antiquewhite;">
-        <div>
-          <h2>Motivação</h2>
-          <p>Só neste ano cerca de 450 toneladas de lixo eletrônico foram descartadas nos pontos de entrega voluntária; esse número pode ser maior se parte da população não conhecer esses pontos.</p>
-          <h3>Nossa Missão</h3>
-          <p>Conectar quem precisa descartar ou doar aparelhos e peças eletrônicas com quem possa reutilizá-las: ONGs, artistas e pequenos reparadores.</p>
-        </div>
-      </section>
-
-      <section id="services">
-        <div>
-          <h2>Serviços</h2>
-          <p>Plataforma para cadastrar itens para doação/descartes e procurar por itens reutilizáveis.</p>
-        </div>
-        <div>
-          <h2>ReCo em números</h2>
-          <ul>
-            <li>1000+ usuários cadastrados</li>
-            <li>500+ itens doados</li>
-            <li>300+ itens reutilizados</li>
-          </ul>
-        </div>
-      </section>
-
-      <section id="contact">
-        <div class="contact">
-          <h2>Contato</h2>
-          <ul>
-            <li>Email: contato@reco.com</li>
-            <li>Telefone: +55 61 1234-5678</li>
-          </ul>
-        </div>
-      </section>
-    {% endblock %}
+    <section class="section-card">
+      <h2 class="h4">Precisa de ajuda?</h2>
+      <ul class="text-muted">
+        <li>Envie um e-mail para <a href="mailto:contato@reco.com">contato@reco.com</a>.</li>
+        <li>Consulte o <a href="{% url 'marketplace:index' %}">marketplace</a> para saber como os anúncios aparecem.</li>
+        <li>Use o chat em cada anúncio para combinar detalhes com segurança.</li>
+      </ul>
+    </section>
+  </div>
+{% endblock %}

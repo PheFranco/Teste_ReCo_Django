@@ -2,8 +2,15 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import AuthenticationForm
+
 from .forms import RegisterForm
 from usuario.models import Profile
+
+
+def _add_form_control_classes(form):
+    for field in form.fields.values():
+        existing = field.widget.attrs.get('class', '')
+        field.widget.attrs['class'] = f"{existing} form-control".strip()
 
 def index(request):
     return render(request, 'usuario/home.html', {'title': 'Usuário'})
@@ -11,6 +18,7 @@ def index(request):
 def login_view(request):
     if request.method == 'POST':
         form = AuthenticationForm(request, data=request.POST)
+        _add_form_control_classes(form)
         if form.is_valid():
             user = form.get_user()
             # Garantir que exista um Profile para este user
@@ -20,6 +28,7 @@ def login_view(request):
             return redirect('home')
     else:
         form = AuthenticationForm(request)
+        _add_form_control_classes(form)
     return render(request, 'usuario/login.html', {'form': form})
 
 def logout_view(request):

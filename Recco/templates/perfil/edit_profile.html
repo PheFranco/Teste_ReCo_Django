@@ -1,29 +1,46 @@
 {% extends 'base.html' %}
-{% load static %}
 
 {% block title %}Editar Perfil — ReCo{% endblock %}
 
 {% block content %}
-  <h1>Editar Perfil</h1>
+  <div class="container">
+    <section class="form-card">
+      <h1 class="h3 mb-3">Atualizar perfil</h1>
+      <p class="text-muted">Mantenha seus dados sempre atualizados para agilizar a comunicação com doadores e receptores.</p>
 
-  <form method="post" action="{% url 'perfil:edit' %}">
-    {% csrf_token %}
+      <form method="post" action="{% url 'perfil:edit' %}" class="mt-4">
+        {% csrf_token %}
+        {{ form.non_field_errors }}
 
-    <fieldset>
-      <legend>Conta</legend>
-      <label>Nome</label>
-      <input type="text" name="first_name" value="{{ user.first_name }}">
-      <label>Email</label>
-      <input type="email" name="email" value="{{ user.email }}">
-    </fieldset>
+        <div class="row g-3">
+          <div class="col-md-6">
+            <label class="form-label">Nome</label>
+            <input class="form-control" type="text" name="first_name" value="{{ user.first_name }}">
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Email</label>
+            <input class="form-control" type="email" name="email" value="{{ user.email }}">
+          </div>
+        </div>
 
-    <fieldset>
-      <legend>Informações do perfil</legend>
-      {{ form.non_field_errors }}
-      {{ form.as_p }}
-    </fieldset>
+        <hr class="my-4">
 
-    <button type="submit">Salvar</button>
-    <a href="{% url 'perfil:index' %}">Cancelar</a>
-  </form>
+        <div class="row g-3">
+          {% for field in form %}
+            <div class="col-md-6">
+              <label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
+              {{ field }}
+              {% if field.help_text %}<small class="text-muted d-block">{{ field.help_text }}</small>{% endif %}
+              {{ field.errors }}
+            </div>
+          {% endfor %}
+        </div>
+
+        <div class="d-flex gap-2 mt-4">
+          <button class="btn btn-primary" type="submit">Salvar</button>
+          <a class="btn btn-outline-secondary" href="{% url 'perfil:index' %}">Cancelar</a>
+        </div>
+      </form>
+    </section>
+  </div>
 {% endblock %}

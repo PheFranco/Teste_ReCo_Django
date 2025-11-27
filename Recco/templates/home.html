@@ -1,18 +1,94 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block title %}Home - ReCo{% endblock %}
+{% block title %}ReCo — Reutiliza &amp; Conecta{% endblock %}
 
 {% block content %}
-<main class="container">
-  <section class="hero">
-    <h1>Bem-vindo ao ReCo</h1>
-    <p>Use a navegação para acessar Marketplace, Usuário e Perfil.</p>
-    <nav>
-      <a href="{% url 'marketplace:index' %}">Marketplace</a> |
-      <a href="{% url 'usuario:index' %}">Usuário</a> |
-      <a href="{% url 'perfil:index' %}">Perfil</a>
-    </nav>
-  </section>
-</main>
+  <div class="container d-flex flex-column gap-4">
+    <section class="hero-banner">
+      <h1>Transforme eletrônicos parados em novas histórias</h1>
+      <p>Conectamos quem precisa descartar ou doar equipamentos com ONGs, reparadores e makers que dão um novo propósito para cada componente.</p>
+      <div class="cta-group">
+        <a class="btn btn-light btn-lg" href="{% url 'marketplace:create' %}">Anunciar doação</a>
+        <a class="btn btn-outline-light btn-lg" href="{% url 'marketplace:index' %}">Explorar itens</a>
+      </div>
+    </section>
+
+    <section class="section-card">
+      <div class="row g-4 align-items-center">
+        <div class="col-md-6">
+          <h2>Como o ReCo funciona?</h2>
+          <p class="text-muted">Criamos uma jornada simples para cadastrar itens, conversar com interessados e acompanhar o impacto gerado pelas doações.</p>
+          <ul class="list-unstyled fw-medium text-muted">
+            <li>1. Cadastre o item com fotos, estado e cidade.</li>
+            <li>2. Receba mensagens de interessados diretamente no chat.</li>
+            <li>3. Combine a retirada ou envio e marque o item como entregue.</li>
+          </ul>
+        </div>
+        <div class="col-md-6">
+          <div class="stat-grid">
+            <div class="stat-card">
+              <strong>1.2k</strong>
+              Usuários ativos
+            </div>
+            <div class="stat-card">
+              <strong>640</strong>
+              Itens doados
+            </div>
+            <div class="stat-card">
+              <strong>310</strong>
+              Reuso garantido
+            </div>
+            <div class="stat-card">
+              <strong>18</strong>
+              Parceiros locais
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="card-grid">
+      <article class="section-card">
+        <h3>Para quem doa</h3>
+        <p class="text-muted">Descarte correto, impacto social e transparência no destino final.</p>
+        <ul>
+          <li>Escolha quem vai receber com base nas mensagens.</li>
+          <li>Acompanhe o status diretamente no painel.</li>
+          <li>Receba dicas para preparo e embalagem dos itens.</li>
+        </ul>
+      </article>
+      <article class="section-card">
+        <h3>Para quem recebe</h3>
+        <p class="text-muted">Filtre por categoria, estado e região para encontrar o que precisa.</p>
+        <ul>
+          <li>Alertas de novos itens na sua cidade.</li>
+          <li>Chat integrado para combinar a logística.</li>
+          <li>Histórico das solicitações em um só lugar.</li>
+        </ul>
+      </article>
+      <article class="section-card">
+        <h3>Impacto coletivo</h3>
+        <p class="text-muted">Relatórios compartilháveis que exibem CO₂ evitado e horas de formação apoiadas.</p>
+        <ul>
+          <li>Indicadores de descarte responsável.</li>
+          <li>Histórias das iniciativas atendidas.</li>
+          <li>Materiais de comunicação para sua organização.</li>
+        </ul>
+      </article>
+    </section>
+
+    <section class="section-card">
+      <div class="d-flex flex-column flex-lg-row gap-4 align-items-start">
+        <div class="flex-fill">
+          <h2>Pronto para começar?</h2>
+          <p class="text-muted">Faça login, complete o perfil e publique o primeiro item em minutos. Sem taxas e com suporte humano para qualquer dúvida.</p>
+        </div>
+        <div class="d-flex gap-3 flex-wrap">
+          <a class="btn btn-primary" href="{% url 'usuario:login' %}">Entrar</a>
+          <a class="btn btn-outline-primary" href="{% url 'usuario:register' %}">Criar conta</a>
+        </div>
+      </div>
+    </section>
+  </div>
 {% endblock %}

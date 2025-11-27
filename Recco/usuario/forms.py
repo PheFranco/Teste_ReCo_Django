@@ -8,12 +8,20 @@ from .models import Profile
 class RegisterForm(UserCreationForm):
     email = forms.EmailField(required=True)
     first_name = forms.CharField(label='Nome completo', required=True)
-    phone = forms.CharField(label='Telefone', required=True)
+    phone = forms.CharField(
+        label='Telefone',
+        required=True,
+        widget=forms.TextInput(attrs={'placeholder': '(61) 99999-9999'})
+    )
     city = forms.ChoiceField(label='Cidade', choices=Profile.CITY_CHOICES)
     user_type = forms.ChoiceField(label='Tipo de usuário', choices=Profile.USER_TYPE_CHOICES)
     cpf_cnpj = forms.CharField(label='CPF/CNPJ', required=True)
     razao_social = forms.CharField(label='Razão social', required=False)
-    birth_date = forms.CharField(label='Data de nascimento (dd/mm/aaaa)', required=False)
+    birth_date = forms.CharField(
+        label='Data de nascimento (dd/mm/aaaa)',
+        required=False,
+        widget=forms.TextInput(attrs={'placeholder': 'dd/mm/aaaa'})
+    )
 
     class Meta:
         model = User
@@ -22,6 +30,14 @@ class RegisterForm(UserCreationForm):
             'phone', 'city', 'user_type', 'cpf_cnpj', 'razao_social', 'birth_date',
             'password1', 'password2'
         )
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        select_fields = {'user_type', 'city'}
+        for name, field in self.fields.items():
+            css = 'form-select' if name in select_fields else 'form-control'
+            existing = field.widget.attrs.get('class', '')
+            field.widget.attrs['class'] = f"{existing} {css}".strip()
 
     def clean(self):
         cleaned = super().clean()

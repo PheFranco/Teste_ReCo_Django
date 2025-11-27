@@ -1,146 +1,123 @@
 {% extends 'base.html' %}
 
-{% block title %}Registrar — ReCo{% endblock %}
-{% load static %}
+{% block title %}Criar conta — ReCo{% endblock %}
 
 {% block content %}
-  <h1>Registrar</h1>
+  <div class="container">
+    <section class="form-card">
+      <h1 class="h3 mb-3">Crie sua conta</h1>
+      <p class="text-muted">Preencha os dados principais para publicar doações ou solicitar itens. Leva menos de 2 minutos.</p>
 
-  {% if messages %}
-    <ul class="messages">
-      {% for message in messages %}
-        <li class="{{ message.tags }}">{{ message }}</li>
-      {% endfor %}
-    </ul>
-  {% endif %}
+      <form method="post" action="{% url 'usuario:register' %}" class="mt-4">
+        {% csrf_token %}
+        {{ form.non_field_errors }}
 
-  <form method="post" action="{% url 'usuario:register' %}">
-    {% csrf_token %}
-    {{ form.non_field_errors }}
+        <div class="row g-3">
+          <div class="col-md-6">
+            <label class="form-label">Usuário</label>
+            {{ form.username }}
+            {{ form.username.errors }}
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Email</label>
+            {{ form.email }}
+            {{ form.email.errors }}
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Nome completo</label>
+            {{ form.first_name }}
+            {{ form.first_name.errors }}
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Telefone</label>
+            {{ form.phone }}
+            {{ form.phone.errors }}
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Cidade</label>
+            {{ form.city }}
+            {{ form.city.errors }}
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Tipo de usuário</label>
+            {{ form.user_type }}
+            {{ form.user_type.errors }}
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">CPF/CNPJ</label>
+            {{ form.cpf_cnpj }}
+            {{ form.cpf_cnpj.errors }}
+          </div>
+          <div class="col-md-6" id="razao-wrap" style="display:none;">
+            <label class="form-label">Razão social</label>
+            {{ form.razao_social }}
+            {{ form.razao_social.errors }}
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Data de nascimento</label>
+            {{ form.birth_date }}
+            {{ form.birth_date.errors }}
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Senha</label>
+            {{ form.password1 }}
+            {{ form.password1.errors }}
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Confirmar senha</label>
+            {{ form.password2 }}
+            {{ form.password2.errors }}
+          </div>
+        </div>
 
-    <div>
-      <label>Usuário</label>
-      {{ form.username }}
-      {{ form.username.errors }}
-    </div>
+        <button class="btn btn-primary w-100 mt-4" type="submit">Criar conta</button>
+      </form>
 
-    <div>
-      <label>Email</label>
-      {{ form.email }}
-      {{ form.email.errors }}
-    </div>
-
-    <div>
-      <label>Nome completo</label>
-      {{ form.first_name }}
-      {{ form.first_name.errors }}
-    </div>
-
-    <div>
-      <label>Telefone</label>
-      {{ form.phone }}
-      {{ form.phone.errors }}
-    </div>
-
-    <div>
-      <label>Cidade</label>
-      {{ form.city }}
-      {{ form.city.errors }}
-    </div>
-
-    <div>
-      <label>Tipo de usuário</label>
-      {{ form.user_type }}
-      {{ form.user_type.errors }}
-    </div>
-
-    <div>
-      <label>CPF/CNPJ</label>
-      {{ form.cpf_cnpj }}
-      {{ form.cpf_cnpj.errors }}
-    </div>
-
-    <div id="razao-wrap" style="display: none;">
-      <label>Razão social</label>
-      {{ form.razao_social }}
-      {{ form.razao_social.errors }}
-    </div>
-
-    <div>
-      <label>Data de nascimento</label>
-      {{ form.birth_date }}
-      {{ form.birth_date.errors }}
-    </div>
-
-    <div>
-      <label>Senha</label>
-      {{ form.password1 }}
-      {{ form.password1.errors }}
-    </div>
-
-    <div>
-      <label>Confirmar senha</label>
-      {{ form.password2 }}
-      {{ form.password2.errors }}
-    </div>
-
-    <button type="submit">Criar conta</button>
-  </form>
-
-  <p>Já tem conta? <a href="{% url 'usuario:login' %}">Entrar</a></p>
+      <p class="text-center mt-3 mb-0">Já tem conta? <a href="{% url 'usuario:login' %}">Entre por aqui</a>.</p>
+    </section>
+  </div>
 
   <script>
-    // Mostrar/ocultar razão social conforme tipo de usuário e aplicar máscaras
     (function(){
-      var userTypeEl = document.querySelector('select[name="user_type"]');
-      var razaoWrap = document.getElementById('razao-wrap');
-      var cpfEl = document.querySelector('input[name="cpf_cnpj"]');
-      var dateEl = document.querySelector('input[name="birth_date"]');
+      const userTypeEl = document.querySelector('select[name="user_type"]');
+      const razaoWrap = document.getElementById('razao-wrap');
+      const cpfEl = document.querySelector('input[name="cpf_cnpj"]');
+      const dateEl = document.querySelector('input[name="birth_date"]');
 
       function toggleRazao() {
-        if (!userTypeEl) return;
-        var val = userTypeEl.value;
-        razaoWrap.style.display = (val === 'pj') ? 'block' : 'none';
-        // adjust placeholder/maxlength if needed
+        if (!userTypeEl || !razaoWrap) return;
+        razaoWrap.style.display = userTypeEl.value === 'pj' ? 'block' : 'none';
       }
 
-      function maskCpfCnpj(v){
-        var digits = v.replace(/\D/g,'');
+      function maskCpfCnpj(value) {
+        let digits = value.replace(/\D/g, '').slice(0, 14);
         if (digits.length <= 11) {
-          // CPF mask 000.000.000-00
-          digits = digits.slice(0,11);
-          digits = digits.replace(/(\d{3})(\d)/,'$1.$2');
-          digits = digits.replace(/(\d{3})(\d)/,'$1.$2');
-          digits = digits.replace(/(\d{3})(\d{1,2})$/,'$1-$2');
-          return digits;
+          digits = digits.replace(/(\d{3})(\d)/, '$1.$2');
+          digits = digits.replace(/(\d{3})(\d)/, '$1.$2');
+          digits = digits.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
         } else {
-          // CNPJ mask 00.000.000/0000-00
-          digits = digits.slice(0,14);
-          digits = digits.replace(/(\d{2})(\d)/,'$1.$2');
-          digits = digits.replace(/(\d{3})(\d)/,'$1.$2');
-          digits = digits.replace(/(\d{3})(\d)/,'$1/$2');
-          digits = digits.replace(/(\d{4})(\d{1,2})$/,'$1-$2');
-          return digits;
+          digits = digits.replace(/(\d{2})(\d)/, '$1.$2');
+          digits = digits.replace(/(\d{3})(\d)/, '$1.$2');
+          digits = digits.replace(/(\d{3})(\d)/, '$1/$2');
+          digits = digits.replace(/(\d{4})(\d{1,2})$/, '$1-$2');
         }
+        return digits;
       }
 
-      function maskDate(v){
-        var d = v.replace(/\D/g,'').slice(0,8);
-        if (d.length >= 5) {
-          d = d.replace(/(\d{2})(\d{2})(\d{1,4})/,'$1/$2/$3');
-        } else if (d.length >= 3) {
-          d = d.replace(/(\d{2})(\d{1,2})/,'$1/$2');
+      function maskDate(value) {
+        let digits = value.replace(/\D/g, '').slice(0, 8);
+        if (digits.length >= 5) {
+          return digits.replace(/(\d{2})(\d{2})(\d{1,4})/, '$1/$2/$3');
         }
-        return d;
+        if (digits.length >= 3) {
+          return digits.replace(/(\d{2})(\d{1,2})/, '$1/$2');
+        }
+        return digits;
       }
 
       if (cpfEl) {
-        cpfEl.addEventListener('input', function(e){
-          var pos = this.selectionStart;
-          var before = this.value;
+        cpfEl.addEventListener('input', function(){
           this.value = maskCpfCnpj(this.value);
-          // try keep cursor near end (best-effort)
-          if (this.selectionStart < pos) this.selectionStart = this.selectionEnd = this.value.length;
         });
       }
 
@@ -152,7 +129,6 @@
 
       if (userTypeEl) {
         userTypeEl.addEventListener('change', toggleRazao);
-        document.addEventListener('DOMContentLoaded', toggleRazao);
         toggleRazao();
       }
     })();
