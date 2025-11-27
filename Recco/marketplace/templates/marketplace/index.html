@@ -59,6 +59,11 @@
       <div class="card-grid">
         {% for donation in donations %}
           <article class="donation-card">
+                {% if donation.image %}
+                  <div class="donation-card__media">
+                    <img src="{{ donation.image.url }}" alt="Imagem de {{ donation.title }}">
+                  </div>
+                {% endif %}
             <div class="d-flex justify-content-between align-items-center">
               <h3 class="h5 mb-0">{{ donation.title }}</h3>
               <span class="pill">{{ donation.get_condition_display }}</span>

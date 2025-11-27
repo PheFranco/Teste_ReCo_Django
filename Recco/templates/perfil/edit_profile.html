@@ -8,7 +8,7 @@
       <h1 class="h3 mb-3">Atualizar perfil</h1>
       <p class="text-muted">Mantenha seus dados sempre atualizados para agilizar a comunicação com doadores e receptores.</p>
 
-      <form method="post" action="{% url 'perfil:edit' %}" class="mt-4">
+      <form method="post" action="{% url 'perfil:edit' %}" class="mt-4" enctype="multipart/form-data">
         {% csrf_token %}
         {{ form.non_field_errors }}
 
@@ -27,7 +27,7 @@
 
         <div class="row g-3">
           {% for field in form %}
-            <div class="col-md-6">
+            <div class="{% if field.name == 'profile_photo' %}col-12{% else %}col-md-6{% endif %}">
               <label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
               {{ field }}
               {% if field.help_text %}<small class="text-muted d-block">{{ field.help_text }}</small>{% endif %}

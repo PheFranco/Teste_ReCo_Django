@@ -27,7 +27,7 @@ def edit_profile(request):
     profile, _ = Profile.objects.get_or_create(user=request.user)
 
     if request.method == 'POST':
-        form = ProfileForm(request.POST, instance=profile)
+        form = ProfileForm(request.POST, request.FILES, instance=profile)
         if form.is_valid():
             form.save()
             # atualizar campos simples do User

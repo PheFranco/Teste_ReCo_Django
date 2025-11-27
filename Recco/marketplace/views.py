@@ -62,7 +62,7 @@ def index(request):
 def create(request):
     """Criar um novo anúncio de doação."""
     if request.method == 'POST':
-        form = DonationForm(request.POST)
+        form = DonationForm(request.POST, request.FILES)
         if form.is_valid():
             donation = form.save(commit=False)
             donation.donor = request.user

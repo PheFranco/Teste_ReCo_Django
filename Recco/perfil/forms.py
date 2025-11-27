@@ -17,13 +17,14 @@ class ProfileForm(forms.ModelForm):
 
     class Meta:
         model = Profile
-        fields = ['phone', 'city', 'user_type', 'cpf_cnpj', 'razao_social', 'birth_date']
+        fields = ['phone', 'city', 'user_type', 'cpf_cnpj', 'razao_social', 'birth_date', 'profile_photo']
         widgets = {
             'user_type': forms.Select(attrs={'class': 'form-select'}),
             'city': forms.Select(attrs={'class': 'form-select'}),
             'cpf_cnpj': forms.TextInput(attrs={'placeholder': 'CPF ou CNPJ', 'class': 'form-control'}),
             'razao_social': forms.TextInput(attrs={'class': 'form-control'}),
             'phone': forms.TextInput(attrs={'placeholder': '(61) 99999-9999', 'class': 'form-control'}),
+            'profile_photo': forms.ClearableFileInput(attrs={'class': 'form-control'}),
         }
 
     def clean_birth_date(self):

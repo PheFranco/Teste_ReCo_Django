@@ -4,7 +4,7 @@ from .models import Donation, Message
 class DonationForm(forms.ModelForm):
     class Meta:
         model = Donation
-        fields = ['title', 'description', 'condition', 'city', 'contact_email', 'contact_phone', 'is_available']
+        fields = ['title', 'description', 'condition', 'city', 'contact_email', 'contact_phone', 'is_available', 'image']
         widgets = {
             'description': forms.Textarea(attrs={'rows':4, 'class':'form-control'}),
             'title': forms.TextInput(attrs={'class':'form-control'}),
@@ -13,6 +13,7 @@ class DonationForm(forms.ModelForm):
             'contact_email': forms.EmailInput(attrs={'class':'form-control'}),
             'contact_phone': forms.TextInput(attrs={'class':'form-control'}),
             'is_available': forms.CheckboxInput(attrs={'class':'form-check-input'}),
+            'image': forms.ClearableFileInput(attrs={'class':'form-control'}),
         }
 
 class MessageForm(forms.ModelForm):

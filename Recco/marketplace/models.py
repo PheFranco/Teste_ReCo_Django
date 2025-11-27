@@ -17,6 +17,7 @@ class Donation(models.Model):
     donor = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='donations')
     created_at = models.DateTimeField(auto_now_add=True)
     is_available = models.BooleanField(default=True)
+    image = models.ImageField(upload_to='donations/', blank=True, null=True)
 
     class Meta:
         ordering = ['-created_at']

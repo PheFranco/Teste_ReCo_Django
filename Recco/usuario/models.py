@@ -30,6 +30,7 @@ class Profile(models.Model):
     cpf_cnpj = models.CharField("CPF/CNPJ", max_length=30, blank=True)
     razao_social = models.CharField("Razão social", max_length=255, blank=True)
     birth_date = models.DateField("Data de nascimento", null=True, blank=True)
+    profile_photo = models.ImageField("Foto do perfil", upload_to='profiles/', blank=True, null=True)
 
     def __str__(self):
         return f"{self.user.username} - {self.get_user_type_display()}"
