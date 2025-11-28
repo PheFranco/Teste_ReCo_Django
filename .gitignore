@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Python / Django
 __pycache__/
 *.py[cod]
@@ -16,3 +17,10 @@ package-lock.json
 # IDE/editor
 .vscode/
 .idea/
+=======
+__pycache__/
+*.py[cod]
+.venv/
+db.sqlite3
+.vscode/
+>>>>>>> 9354b77d (chore: upload project ReCo)
