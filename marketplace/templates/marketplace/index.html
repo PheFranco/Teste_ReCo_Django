@@ -1,13 +1,13 @@
 {% extends 'base.html' %}
 
-{% block title %}Marketplace — ReCo{% endblock %}
+{% block title %}Doações — ReCo{% endblock %}
 
 {% block content %}
   <div class="container d-flex flex-column gap-4">
     <div class="d-flex flex-wrap justify-content-between align-items-start gap-3">
-      <div>
-        <h1 class="h3 mb-1">Marketplace</h1>
-        <p class="text-muted mb-0">Filtre por cidade, estado de conservação ou palavras-chave para encontrar o componente certo.</p>
+        <div>
+        <h1 class="h3 mb-1">Doações</h1>
+        <p class="text-muted mb-0">Filtre por cidade, estado de conservação ou palavras-chave para encontrar a doação certa.</p>
       </div>
       <div class="d-flex gap-2">
         <a class="btn btn-outline-secondary" href="{% url 'marketplace:chats' %}">Meus chats</a>
@@ -82,7 +82,7 @@
           </article>
         {% endfor %}
       </div>
-    {% else %}
+      {% else %}
       <section class="section-card text-center">
         <h2 class="h4">Ainda não temos itens nesse filtro</h2>
         <p class="text-muted">Remova alguns filtros ou volte mais tarde para ver novos anúncios.</p>

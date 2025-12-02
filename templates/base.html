@@ -13,7 +13,7 @@
   <header class="site-header">
     <div class="container nav-container">
       <a class="brand" href="{% url 'home' %}">
-        <img src="{% static 'images/logo.svg' %}" alt="Logotipo ReCo" height="32" loading="lazy">
+        <img src="{% static 'logo_ReCo.png' %}" alt="Logotipo ReCo" height="32" loading="lazy">
         <span>ReCo</span>
       </a>
 
@@ -29,8 +29,7 @@
             </button>
             <div class="nav-dropdown-menu" role="menu">
               <a role="menuitem" href="{% url 'home' %}">Início</a>
-              <a role="menuitem" href="{% url 'marketplace:index' %}">Marketplace</a>
-              <a role="menuitem" href="{% url 'usuario:index' %}">Usuário</a>
+              <a role="menuitem" href="{% url 'marketplace:index' %}">Doações</a>
               <a role="menuitem" href="{% url 'perfil:index' %}">Perfil</a>
               <a role="menuitem" href="{% url 'marketplace:chats' %}">Chats</a>
               <a role="menuitem" href="{% url 'usuario:logout' %}">Sair</a>

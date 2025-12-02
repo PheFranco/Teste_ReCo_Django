@@ -1,12 +1,19 @@
 :root {
-  --bg-page: #f7f7f9;
-  --bg-dark: #201f2b;
-  --bg-darker: #15141d;
-  --text-primary: #1f1f23;
-  --text-muted: #5d5f75;
-  --brand: #5f4dee;
-  --brand-dark: #4b3ad3;
-  --card-shadow: 0 20px 45px rgba(15, 22, 38, 0.08);
+  /* Paleta: amarelo cerrado, marrom e tons de pôr-do-sol */
+  --bg-page: #FFF7EE;        /* creme claro */
+  --bg-dark: #3B2B20;        /* marrom profundo para header */
+  --bg-darker: #24170F;      /* marrom muito escuro para footer */
+  --text-primary: #2E241B;   /* texto primário (marrom escuro) */
+  --text-muted: #7A6B60;     /* texto secundário */
+  --brand: #D89A2A;          /* amarelo-ocre (cerrado) */
+  --brand-dark: #8A4B1E;     /* marrom/laranja queimado */
+  --burnt: #C86A1A;         /* amarelo queimado */
+  --btn-brown: #7A4828;     /* tom marrom para botões */
+  --btn-orange: #D97F2A;    /* tom laranja para botões */
+  --accent-sky1: #FF7A59;    /* laranja pôr-do-sol */
+  --accent-sky2: #FFB199;    /* pêssego claro */
+  --accent-sky3: #7B59FF;    /* tom de crepúsculo */
+  --card-shadow: 0 20px 45px rgba(27, 18, 12, 0.06);
 }
 
 * {
@@ -59,8 +66,46 @@ a {
 }
 
 .nav-actions .welcome {
-  color: #d1d2ff;
+  color: var(--brand);
   font-size: 0.9rem;
+}
+
+/* Botões: substituir tons azuis por marrom/laranja do cerrado */
+.btn-primary {
+  background-color: var(--btn-brown) !important;
+  border-color: var(--btn-brown) !important;
+  color: #fff !important;
+}
+.btn-primary:hover,
+.btn-primary:focus {
+  background-color: var(--brand-dark) !important;
+  border-color: var(--brand-dark) !important;
+}
+
+.btn-outline-primary {
+  color: var(--btn-brown) !important;
+  border-color: var(--btn-brown) !important;
+  background: transparent !important;
+}
+.btn-outline-primary:hover,
+.btn-outline-primary:focus {
+  background: rgba(200,110,40,0.08) !important;
+}
+
+/* Botão secundário (Menu) em tom laranja suave */
+.btn-secondary {
+  background-color: var(--btn-orange) !important;
+  border-color: var(--btn-orange) !important;
+  color: #fff !important;
+}
+
+/* Caixa hero/banner: amarelo queimado (cerrado) */
+.hero-banner {
+  background: linear-gradient(120deg, var(--burnt), var(--brand)) !important;
+  color: #fff;
+  border-radius: 1.5rem;
+  padding: 3rem;
+  box-shadow: var(--card-shadow);
 }
 
 .nav-dropdown {
@@ -96,7 +141,7 @@ a {
 
 .nav-dropdown-menu a:hover,
 .nav-dropdown-menu a:focus-visible {
-  background: rgba(95, 77, 238, 0.08);
+  background: rgba(216,138,26,0.08);
 }
 
 .nav-dropdown.open .nav-dropdown-menu {
@@ -110,7 +155,7 @@ a {
 
 .site-footer {
   background: var(--bg-darker);
-  color: #c5c6f5;
+  color: #F4EAD6;
   padding: 2rem 0;
   text-align: center;
 }
@@ -120,7 +165,7 @@ a {
 }
 
 .hero-banner {
-  background: linear-gradient(120deg, #5f4dee, #3dd6d0);
+  background: linear-gradient(120deg, var(--accent-sky1), var(--brand));
   color: #fff;
   border-radius: 1.5rem;
   padding: 3rem;
@@ -164,7 +209,7 @@ a {
 }
 
 .stat-card {
-  background: #f3f4ff;
+  background: #FFF3E0;
   border-radius: 0.8rem;
   padding: 1rem;
   text-align: center;
@@ -274,8 +319,8 @@ a {
   height: 72px;
   border-radius: 50%;
   overflow: hidden;
-  background: rgba(95, 77, 238, 0.18);
-  color: var(--brand);
+  background: rgba(216,138,26,0.12);
+  color: var(--brand-dark);
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -287,6 +332,7 @@ a {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  display: block;
 }
 
 .profile-summary dt {

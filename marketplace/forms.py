@@ -5,6 +5,16 @@ class DonationForm(forms.ModelForm):
     class Meta:
         model = Donation
         fields = ['title', 'description', 'condition', 'city', 'contact_email', 'contact_phone', 'is_available', 'image']
+        labels = {
+            'title': 'Título',
+            'description': 'Descrição',
+            'condition': 'Condição',
+            'city': 'Cidade',
+            'contact_email': 'E-mail de contato',
+            'contact_phone': 'Telefone de contato',
+            'is_available': 'Disponível',
+            'image': 'Imagem',
+        }
         widgets = {
             'description': forms.Textarea(attrs={'rows':4, 'class':'form-control'}),
             'title': forms.TextInput(attrs={'class':'form-control'}),

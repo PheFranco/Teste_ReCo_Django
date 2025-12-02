@@ -7,6 +7,7 @@ from usuario.models import Profile
 class ProfileForm(forms.ModelForm):
     birth_date = forms.CharField(
         required=False,
+        label='Data de Nascimento',
         widget=forms.TextInput(attrs={'placeholder': 'dd/mm/aaaa', 'class': 'form-control'})
     )
 
